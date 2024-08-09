@@ -481,28 +481,6 @@ func TestOldLogFiles(t *testing.T) {
 	equals(t1, files[1].timestamp, t)
 }
 
-func TestTimeFromName(t *testing.T) {
-	l := &Logger{Filename: "/var/log/myfoo/foo.log"}
-	prefix, ext := l.prefixAndExt()
-
-	tests := []struct {
-		filename string
-		want     time.Time
-		wantErr  bool
-	}{
-		{"foo-2014-05-04T14-44-33.555.log", time.Date(2014, 5, 4, 14, 44, 33, 555000000, time.UTC), false},
-		{"foo-2014-05-04T14-44-33.555", time.Time{}, true},
-		{"2014-05-04T14-44-33.555.log", time.Time{}, true},
-		{"foo.log", time.Time{}, true},
-	}
-
-	for _, test := range tests {
-		got, err := l.timeFromName(test.filename, prefix, ext)
-		equals(got, test.want, t)
-		equals(err != nil, test.wantErr, t)
-	}
-}
-
 func TestLocalTime(t *testing.T) {
 	currentTime = fakeTime
 	megabyte = 1
